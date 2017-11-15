@@ -1,4 +1,4 @@
-import java.util.Iterator;
+/*import java.util.Iterator;
 
 public class StockTrade {
     private PrioQueue<Bid> sellersQueue;
@@ -16,4 +16,4 @@ public class StockTrade {
     public Iterator<Bid> buyBidsIterator() {
         return buyersQueue.iterator();
     }
-}
+}*/
