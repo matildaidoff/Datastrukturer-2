@@ -30,16 +30,14 @@ public class BinHeap <E>implements PrioQueue<E> {
 
     @Override
     public void remove(E e) {
-        if(set.contains(e)) {
-            for (int i = 0; i < set.size(); i++) {
-                if (e.equals(set.get(i))) {
-                    swap(i, set.size()-1);
-                    set.remove(set.size()-1);
-                    bubbleDown(i);
-                    break;
-                }
+        int j = set.indexOf(e);
+        if(j >= 0 && set.size() > 0) {
+            swap(j, set.size() - 1);
+            set.remove(set.size() - 1);
+            if (set.size() != j) {
+                bubbleDown(j);
+                bubbleUp(j);
             }
-
         }
     }
 
@@ -57,22 +55,36 @@ public class BinHeap <E>implements PrioQueue<E> {
         while (hasParent(index) && comp.compare(set.get(index), set.get(parentIndex)) < 0){
             swap(parentIndex, index);
             index = parentIndex;
+            parentIndex = (index-1)/2;
         }
     }
     private void bubbleDown(int index){
         //int index = 0;
-        while(hasChildL(index)){
-            int smallerChild = index*2+1;
-            if(hasChildH(index) && comp.compare(set.get(index), set.get(smallerChild)) < 0)
-                smallerChild = index*2+2;
-            if (comp.compare(set.get(index), set.get(smallerChild)) > 0)
-                swap(index, smallerChild);
-            else
-                break;
+            E element = set.get(index);
+            int leftChild = index*2 +1;
+            int rightChild = index*2 +2;
 
-            index = smallerChild;
-        }
-
+            if(hasChildL(index) && hasChildR(index)) { //finns 2 barn
+                E lChild = set.get(leftChild);
+                E rChild = set.get(rightChild);
+                if (comp.compare(lChild, rChild ) < 0) { //minsta barnet till vänster
+                    if (comp.compare(element, lChild) > 0) { //noden är större än barnet till vänster
+                        swap(index, leftChild);
+                        bubbleDown(leftChild);
+                    }
+                }else{
+                    if(comp.compare(element, rChild) > 0) { //noden är större än barnet till höger
+                        swap(index, rightChild);
+                        bubbleDown(rightChild);
+                    }
+                }
+            }else if(hasChildL(index)){ //finns ett barn och det är på vänster
+                E lChild = set.get(leftChild);
+                if(comp.compare(element, lChild) > 0 ) {
+                    swap(index, leftChild);
+                    bubbleDown(leftChild);
+                }
+            }
     }
 
     private boolean hasParent(int i){
@@ -80,12 +92,12 @@ public class BinHeap <E>implements PrioQueue<E> {
     }
     private boolean hasChildL(int i){
         i = i*2+1;
-        return i <= set.size();
+        return i < set.size();
     }
 
-    private boolean hasChildH(int i){
+    private boolean hasChildR(int i){
         i = i*2+2;
-        return i <= set.size();
+        return i < set.size();
     }
 
     private void swap(int i1, int i2){

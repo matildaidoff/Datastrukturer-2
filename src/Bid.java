@@ -1,4 +1,4 @@
-/*import java.util.Objects;
+import java.util.Objects;
 
 public class Bid {
     public Bid(String name, int price) {
@@ -26,4 +26,4 @@ public class Bid {
     public String toString() {
         return "new Bid(\"" + name + "\", " + price + ")";
     }
-}*/
+}
