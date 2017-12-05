@@ -8,6 +8,6 @@ public class Sellcomp implements Comparator<Bid>  {
 
     @Override
     public int compare(Bid o1, Bid o2) {
-        return o2.price - o1.price;
+        return o1.price - o2.price;
     }
 }
